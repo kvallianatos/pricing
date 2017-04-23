@@ -26,6 +26,9 @@ public class testPricingEngine {
 
 		TestingCartTuple cartTuple = createRandomCart(1000);
 		assertEquals("Incorrect final charge calculated", cartTuple.total, new CheckoutService().handleCheckout(cartTuple.cart));
+
+		cart = createStaticCartWithOffers();
+		assertEquals("Incorrect final charge calculated", BigDecimal.valueOf(8.18), new CheckoutService().handleCheckout(cart));
 	}
 
 	private ShoppingCart createStaticCart() {
@@ -44,6 +47,26 @@ public class testPricingEngine {
 		return cart;
 	}
 
+	private ShoppingCart createStaticCartWithOffers() {
+		ShoppingCart cart = new ShoppingCart();
+
+		cart.getCartItems().put("Beans", new ArrayList<>());
+		cart.getCartItems().put("Coke", new ArrayList<>());
+		cart.getCartItems().put("Milk", new ArrayList<>());
+		cart.getCartItems().put("Muffins", new ArrayList<>());
+
+		cart.getCartItems().get("Beans").add(new Item("Beans", BigDecimal.valueOf(1.99)));
+		cart.getCartItems().get("Coke").add(new Item("Coke", BigDecimal.valueOf(0.99)));
+		cart.getCartItems().get("Coke").add(new Item("Coke", BigDecimal.valueOf(0.99)));
+		cart.getCartItems().get("Coke").add(new Item("Coke", BigDecimal.valueOf(0.99)));
+		cart.getCartItems().get("Milk").add(new Item("Milk", BigDecimal.valueOf(1.20)));
+		cart.getCartItems().get("Muffins").add(new Item("Muffins", BigDecimal.valueOf(1.01)));
+		cart.getCartItems().get("Muffins").add(new Item("Muffins", BigDecimal.valueOf(1.01)));
+		cart.getCartItems().get("Muffins").add(new Item("Muffins", BigDecimal.valueOf(1.01)));
+
+		return cart;
+	}
+
 	private TestingCartTuple createRandomCart(int numItems) {
 		Random r = new Random();
 		BigDecimal total = BigDecimal.ZERO;
@@ -51,7 +74,7 @@ public class testPricingEngine {
 		String[] itemTypes = {"Beans", "Coke", "Milk", "Orange juice", "Eggs", "Flour", "Avocado", "Wine"};
 		Map<String, BigDecimal> itemPrices = new HashMap<>();
 		for (int i = 0; i < itemTypes.length; i++) {
-			itemPrices.put(itemTypes[i], BigDecimal.valueOf(r.nextDouble() * (double)r.nextInt(10)).setScale(2, BigDecimal.ROUND_DOWN));
+			itemPrices.put(itemTypes[i], BigDecimal.valueOf(r.nextDouble() * (double)r.nextInt(10)).setScale(2, BigDecimal.ROUND_HALF_UP));
 		}
 
 		TestingCartTuple cartTuple = new TestingCartTuple();
