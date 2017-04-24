@@ -6,16 +6,17 @@ import net.kvallianatos.pricing.entity.ShoppingCart;
 import java.math.BigDecimal;
 
 /**
- * Class implementing functionality for processing offers of type "Buy 3 of X for the price of 2".
+ * Class implementing functionality for processing offers of type "Buy 2 of X for a fixed amount".
  */
-public class XForYOffer implements Offer {
+public class XForFixedPriceOffer implements Offer {
 
-	private int x,y;
+	private BigDecimal fixedPrice;
+	private int x;
 
-	public XForYOffer(OfferDetails offerdetails) {
+	public XForFixedPriceOffer(OfferDetails offerdetails) {
 		super();
 		this.x = offerdetails.getX();
-		this.y = offerdetails.getY();
+		this.fixedPrice = offerdetails.getFixedPrice();
 	}
 
 	@Override
@@ -25,12 +26,10 @@ public class XForYOffer implements Offer {
 			Item item = cart.getCartItems().get(itemType).get(0);
 			cart.getProcessedItems().add(item);
 			cart.getCartItems().get(itemType).remove(item);
-			if (i >= y) {
-				adjustment = adjustment.subtract(item.getPrice());
-			}
+			adjustment = adjustment.subtract(item.getPrice());
 		}
 
-		return adjustment;
+		return adjustment.add(fixedPrice);
 	}
 
 	@Override

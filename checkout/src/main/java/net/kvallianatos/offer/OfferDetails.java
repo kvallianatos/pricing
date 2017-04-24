@@ -1,13 +1,14 @@
 package net.kvallianatos.offer;
 
-/**
- * Created by wbtz on 23/04/17.
- */
+
+import java.math.BigDecimal;
+
 public class OfferDetails {
 
 	private OfferType type;
 	private int x;
 	private int y;
+	private BigDecimal fixedPrice;
 
 	public OfferType getType() {
 		return type;
@@ -31,5 +32,13 @@ public class OfferDetails {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public BigDecimal getFixedPrice() {
+		return fixedPrice;
+	}
+
+	public void setFixedPrice(BigDecimal fixedPrice) {
+		this.fixedPrice = fixedPrice;
 	}
 }

@@ -2,7 +2,7 @@ package net.kvallianatos;
 
 import net.kvallianatos.pricing.entity.Item;
 import net.kvallianatos.pricing.entity.ShoppingCart;
-import net.kvallianatos.pricing.service.CheckoutService;
+import net.kvallianatos.pricing.service.CheckoutServiceImpl;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -15,20 +15,33 @@ import static org.junit.Assert.assertEquals;
 
 public class testPricingEngine {
 
-	/**
+	/*
 	 * Test that the implementation correctly calculates the total cost of the items in a shopping cart.
 	 * This is the base scenario with no active offers and items with unit pricing.
 	 */
 	@Test
-	public void testCalculateShoppingCartCost() {
+	public void testCalculateShoppingCartCostWithoutOffers() {
 		ShoppingCart cart = createStaticCart();
-		assertEquals("Incorrect final charge calculated", BigDecimal.valueOf(7.37), new CheckoutService().handleCheckout(cart));
+		assertEquals("Incorrect final charge calculated", BigDecimal.valueOf(7.37), new CheckoutServiceImpl().handleCheckout(cart));
+	}
 
+	/*
+	 * Randomized test which be used for regressions. The shopping cart is randomly created for the given number of items.
+	 * Item types are selected so as to have no active offers.
+	 */
+	@Test
+	public void testCalculateRandomizedShoppingCartCostWithoutOffers() {
 		TestingCartTuple cartTuple = createRandomCart(1000);
-		assertEquals("Incorrect final charge calculated", cartTuple.total, new CheckoutService().handleCheckout(cartTuple.cart));
+		assertEquals("Incorrect final charge calculated", cartTuple.total, new CheckoutServiceImpl().handleCheckout(cartTuple.cart));
+	}
 
-		cart = createStaticCartWithOffers();
-		assertEquals("Incorrect final charge calculated", BigDecimal.valueOf(8.18), new CheckoutService().handleCheckout(cart));
+	/*
+	 * Tests full checkout cost calculation with offers, including applying same offer multiple times
+	 */
+	@Test
+	public void testCalculateFixedShoppingCartCostWithOffers() {
+		ShoppingCart cart = createStaticCartWithOffers();
+		assertEquals("Incorrect final charge calculated", BigDecimal.valueOf(14.18), new CheckoutServiceImpl().handleCheckout(cart));
 	}
 
 	private ShoppingCart createStaticCart() {
@@ -54,6 +67,7 @@ public class testPricingEngine {
 		cart.getCartItems().put("Coke", new ArrayList<>());
 		cart.getCartItems().put("Milk", new ArrayList<>());
 		cart.getCartItems().put("Muffins", new ArrayList<>());
+		cart.getCartItems().put("Pork pie", new ArrayList<>());
 
 		cart.getCartItems().get("Beans").add(new Item("Beans", BigDecimal.valueOf(1.99)));
 		cart.getCartItems().get("Coke").add(new Item("Coke", BigDecimal.valueOf(0.99)));
@@ -63,6 +77,10 @@ public class testPricingEngine {
 		cart.getCartItems().get("Muffins").add(new Item("Muffins", BigDecimal.valueOf(1.01)));
 		cart.getCartItems().get("Muffins").add(new Item("Muffins", BigDecimal.valueOf(1.01)));
 		cart.getCartItems().get("Muffins").add(new Item("Muffins", BigDecimal.valueOf(1.01)));
+		cart.getCartItems().get("Pork pie").add(new Item("Pork pie", BigDecimal.valueOf(2.00)));
+		cart.getCartItems().get("Pork pie").add(new Item("Pork pie", BigDecimal.valueOf(2.00)));
+		cart.getCartItems().get("Pork pie").add(new Item("Pork pie", BigDecimal.valueOf(2.00)));
+		cart.getCartItems().get("Pork pie").add(new Item("Pork pie", BigDecimal.valueOf(2.00)));
 
 		return cart;
 	}

@@ -5,6 +5,5 @@ package net.kvallianatos.offer;
  */
 public enum OfferType {
 	XForYPrice,
-	XForFixedPrice,
-	ReducedPrice
+	XForFixedPrice
 }
