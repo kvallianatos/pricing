@@ -3,16 +3,14 @@ package net.kvallianatos;
 import net.kvallianatos.offer.OfferDetails;
 import net.kvallianatos.offer.OfferType;
 import net.kvallianatos.offer.XForYOffer;
-import net.kvallianatos.pricing.entity.Item;
 import net.kvallianatos.pricing.entity.ShoppingCart;
+import net.kvallianatos.pricing.entity.UnitItem;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class testXForYOffer {
 
@@ -39,14 +37,14 @@ public class testXForYOffer {
 		cart.getCartItems().put("Coke", new ArrayList<>());
 		cart.getCartItems().put("Milk", new ArrayList<>());
 
-		cart.getCartItems().get("Beans").add(new Item("Beans", BigDecimal.valueOf(1.99)));
-		cart.getCartItems().get("Beans").add(new Item("Beans", BigDecimal.valueOf(1.99)));
-		cart.getCartItems().get("Beans").add(new Item("Beans", BigDecimal.valueOf(1.99)));
-		cart.getCartItems().get("Beans").add(new Item("Beans", BigDecimal.valueOf(1.99)));
-		cart.getCartItems().get("Coke").add(new Item("Coke", BigDecimal.valueOf(0.99)));
-		cart.getCartItems().get("Milk").add(new Item("Milk", BigDecimal.valueOf(1.20)));
-		cart.getCartItems().get("Milk").add(new Item("Milk", BigDecimal.valueOf(1.20)));
-		cart.getCartItems().get("Milk").add(new Item("Milk", BigDecimal.valueOf(1.20)));
+		cart.getCartItems().get("Beans").add(new UnitItem("Beans", BigDecimal.valueOf(1.99)));
+		cart.getCartItems().get("Beans").add(new UnitItem("Beans", BigDecimal.valueOf(1.99)));
+		cart.getCartItems().get("Beans").add(new UnitItem("Beans", BigDecimal.valueOf(1.99)));
+		cart.getCartItems().get("Beans").add(new UnitItem("Beans", BigDecimal.valueOf(1.99)));
+		cart.getCartItems().get("Coke").add(new UnitItem("Coke", BigDecimal.valueOf(0.99)));
+		cart.getCartItems().get("Milk").add(new UnitItem("Milk", BigDecimal.valueOf(1.20)));
+		cart.getCartItems().get("Milk").add(new UnitItem("Milk", BigDecimal.valueOf(1.20)));
+		cart.getCartItems().get("Milk").add(new UnitItem("Milk", BigDecimal.valueOf(1.20)));
 
 		return cart;
 	}

@@ -2,6 +2,8 @@ package net.kvallianatos;
 
 import net.kvallianatos.pricing.entity.Item;
 import net.kvallianatos.pricing.entity.ShoppingCart;
+import net.kvallianatos.pricing.entity.UnitItem;
+import net.kvallianatos.pricing.entity.WeightBasedItem;
 import net.kvallianatos.pricing.service.CheckoutServiceImpl;
 import org.junit.Test;
 
@@ -22,7 +24,7 @@ public class testPricingEngine {
 	@Test
 	public void testCalculateShoppingCartCostWithoutOffers() {
 		ShoppingCart cart = createStaticCart();
-		assertEquals("Incorrect final charge calculated", BigDecimal.valueOf(7.37), new CheckoutServiceImpl().handleCheckout(cart));
+		assertEquals("Incorrect final charge calculated", BigDecimal.valueOf(14.87), new CheckoutServiceImpl().handleCheckout(cart));
 	}
 
 	/*
@@ -50,12 +52,15 @@ public class testPricingEngine {
 		cart.getCartItems().put("Beans", new ArrayList<>());
 		cart.getCartItems().put("Coke", new ArrayList<>());
 		cart.getCartItems().put("Milk", new ArrayList<>());
+		cart.getCartItems().put("Tomatoes", new ArrayList<>());
 
-		cart.getCartItems().get("Beans").add(new Item("Beans", BigDecimal.valueOf(1.99)));
-		cart.getCartItems().get("Beans").add(new Item("Beans", BigDecimal.valueOf(1.99)));
-		cart.getCartItems().get("Coke").add(new Item("Coke", BigDecimal.valueOf(0.99)));
-		cart.getCartItems().get("Milk").add(new Item("Milk", BigDecimal.valueOf(1.20)));
-		cart.getCartItems().get("Milk").add(new Item("Milk", BigDecimal.valueOf(1.20)));
+		cart.getCartItems().get("Beans").add(new UnitItem("Beans", BigDecimal.valueOf(1.99)));
+		cart.getCartItems().get("Beans").add(new UnitItem("Beans", BigDecimal.valueOf(1.99)));
+		cart.getCartItems().get("Coke").add(new UnitItem("Coke", BigDecimal.valueOf(0.99)));
+		cart.getCartItems().get("Milk").add(new UnitItem("Milk", BigDecimal.valueOf(1.20)));
+		cart.getCartItems().get("Milk").add(new UnitItem("Milk", BigDecimal.valueOf(1.20)));
+
+		cart.getCartItems().get("Tomatoes").add(new WeightBasedItem("Tomatoes", BigDecimal.valueOf(2.50), 3.0));
 
 		return cart;
 	}
@@ -69,18 +74,18 @@ public class testPricingEngine {
 		cart.getCartItems().put("Muffins", new ArrayList<>());
 		cart.getCartItems().put("Pork pie", new ArrayList<>());
 
-		cart.getCartItems().get("Beans").add(new Item("Beans", BigDecimal.valueOf(1.99)));
-		cart.getCartItems().get("Coke").add(new Item("Coke", BigDecimal.valueOf(0.99)));
-		cart.getCartItems().get("Coke").add(new Item("Coke", BigDecimal.valueOf(0.99)));
-		cart.getCartItems().get("Coke").add(new Item("Coke", BigDecimal.valueOf(0.99)));
-		cart.getCartItems().get("Milk").add(new Item("Milk", BigDecimal.valueOf(1.20)));
-		cart.getCartItems().get("Muffins").add(new Item("Muffins", BigDecimal.valueOf(1.01)));
-		cart.getCartItems().get("Muffins").add(new Item("Muffins", BigDecimal.valueOf(1.01)));
-		cart.getCartItems().get("Muffins").add(new Item("Muffins", BigDecimal.valueOf(1.01)));
-		cart.getCartItems().get("Pork pie").add(new Item("Pork pie", BigDecimal.valueOf(2.00)));
-		cart.getCartItems().get("Pork pie").add(new Item("Pork pie", BigDecimal.valueOf(2.00)));
-		cart.getCartItems().get("Pork pie").add(new Item("Pork pie", BigDecimal.valueOf(2.00)));
-		cart.getCartItems().get("Pork pie").add(new Item("Pork pie", BigDecimal.valueOf(2.00)));
+		cart.getCartItems().get("Beans").add(new UnitItem("Beans", BigDecimal.valueOf(1.99)));
+		cart.getCartItems().get("Coke").add(new UnitItem("Coke", BigDecimal.valueOf(0.99)));
+		cart.getCartItems().get("Coke").add(new UnitItem("Coke", BigDecimal.valueOf(0.99)));
+		cart.getCartItems().get("Coke").add(new UnitItem("Coke", BigDecimal.valueOf(0.99)));
+		cart.getCartItems().get("Milk").add(new UnitItem("Milk", BigDecimal.valueOf(1.20)));
+		cart.getCartItems().get("Muffins").add(new UnitItem("Muffins", BigDecimal.valueOf(1.01)));
+		cart.getCartItems().get("Muffins").add(new UnitItem("Muffins", BigDecimal.valueOf(1.01)));
+		cart.getCartItems().get("Muffins").add(new UnitItem("Muffins", BigDecimal.valueOf(1.01)));
+		cart.getCartItems().get("Pork pie").add(new UnitItem("Pork pie", BigDecimal.valueOf(2.00)));
+		cart.getCartItems().get("Pork pie").add(new UnitItem("Pork pie", BigDecimal.valueOf(2.00)));
+		cart.getCartItems().get("Pork pie").add(new UnitItem("Pork pie", BigDecimal.valueOf(2.00)));
+		cart.getCartItems().get("Pork pie").add(new UnitItem("Pork pie", BigDecimal.valueOf(2.00)));
 
 		return cart;
 	}
@@ -103,10 +108,10 @@ public class testPricingEngine {
 			total = total.add(itemPrices.get(itemType));
 
 			if (cart.getCartItems().containsKey(itemType)) {
-				cart.getCartItems().get(itemType).add(new Item(itemType, itemPrices.get(itemType)));
+				cart.getCartItems().get(itemType).add(new UnitItem(itemType, itemPrices.get(itemType)));
 			} else {
 				ArrayList<Item> itemList = new ArrayList<>();
-				itemList.add(new Item(itemType, itemPrices.get(itemType)));
+				itemList.add(new UnitItem(itemType, itemPrices.get(itemType)));
 				cart.getCartItems().put(itemType, itemList);
 			}
 		}
