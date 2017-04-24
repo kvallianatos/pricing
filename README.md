@@ -26,6 +26,6 @@ field for this.
 Using a ReST API, both the active offers and the current price of any item type
 could be defined using the folling URI pattern:
 
-\<base URL\>/\<item type\>/price/current
+\<base URL\>/price/\<item type\>/current
 
-\<base URL\>/\<item type\>/offers/active
+\<base URL\>/offer/\<item type\>/active
